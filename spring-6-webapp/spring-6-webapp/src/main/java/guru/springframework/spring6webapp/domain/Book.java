@@ -3,9 +3,11 @@ package guru.springframework.spring6webapp.domain;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Created by jt, Spring Framework Guru.
+ */
 @Entity
 public class Book {
 
@@ -15,12 +17,10 @@ public class Book {
     private String title;
     private String isbn;
 
-
-
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private  Set<Author> authors = new HashSet<>();
+    private Set<Author> authors = new HashSet<>();
 
     @ManyToOne
     private Publisher publisher;
@@ -76,15 +76,24 @@ public class Book {
     }
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Book book)) return false;
+        if (!(o instanceof Book)) return false;
 
-        return Objects.equals(getId(), book.getId());
+        Book book = (Book) o;
+
+        return getId() != null ? getId().equals(book.getId()) : book.getId() == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return getId() != null ? getId().hashCode() : 0;
     }
 }
+
+
+
+
+
+
+
