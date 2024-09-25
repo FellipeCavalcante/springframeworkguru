@@ -16,9 +16,12 @@ import java.util.UUID;
 @RestController
 public class CustomerController {
 
+    public static final String CUSTOMER_PATH = "/api/v1/customer";
+    public static final String CUSTOMER_PATH_ID = CUSTOMER_PATH + "/{customerId}";
+
     private final CustomerService customerService;
 
-    @PatchMapping("{customerId}")
+    @PatchMapping(CUSTOMER_PATH_ID)
     public ResponseEntity updateByIdCustomer(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer) {
 
         customerService.patchCutomerId(customerId, customer);
@@ -26,7 +29,7 @@ public class CustomerController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("{customerId}")
+    @DeleteMapping(CUSTOMER_PATH_ID)
     public ResponseEntity deleteById(@PathVariable("customerId") UUID customerId) {
 
         customerService.deleteById(customerId);
@@ -34,7 +37,7 @@ public class CustomerController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("{customerId}")
+    @PutMapping(CUSTOMER_PATH_ID)
     public ResponseEntity updateById(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer) {
 
         customerService.updateCustomerById(customerId, customer);
@@ -53,12 +56,12 @@ public class CustomerController {
         return  new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping(value = CUSTOMER_PATH)
     public List<Customer> listAllCustomers() {
         return customerService.getAllCustomers();
     }
 
-    @RequestMapping(value = "{customerId}", method = RequestMethod.GET)
+    @GetMapping(value = CUSTOMER_PATH_ID)
     public Customer getCustomerById(@PathVariable("customerId") UUID customerId) {
 
         return  customerService.getCustomerById(customerId);
