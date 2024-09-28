@@ -44,21 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomerById(UUID customerId, Customer customer) {
-        Customer existing = customerMap.get(customerId);
-
-        existing.setName(customer.getName());
-
-        customerMap.put(existing.getId(), existing);
-    }
-
-    @Override
-    public void deleteById(UUID customerId) {
-        customerMap.remove(customerId);
-    }
-
-    @Override
-    public void patchCutomerId(UUID customerId, Customer customer) {
+    public void patchCustomerById(UUID customerId, Customer customer) {
         Customer existing = customerMap.get(customerId);
 
         if (StringUtils.hasText(customer.getName())) {
@@ -67,28 +53,39 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerById(UUID uuid) {
-        return customerMap.get(uuid);
+    public void deleteCustomerById(UUID customerId) {
+        customerMap.remove(customerId);
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
-        return new ArrayList<>(customerMap.values());
+    public void updateCustomerById(UUID customerId, Customer customer) {
+        Customer existing = customerMap.get(customerId);
+        existing.setName(customer.getName());
     }
 
     @Override
     public Customer saveNewCustomer(Customer customer) {
 
         Customer savedCustomer = Customer.builder()
-                .id(UUID.randomUUID()) // Gera um novo UUID
-                .version(1)            // Define a versão como 1 para novos clientes
+                .id(UUID.randomUUID())
+                .version(1)
+                .updateDate(LocalDateTime.now())
+                .createdDate(LocalDateTime.now())
                 .name(customer.getName())
-                .createdDate(LocalDateTime.now()) // Define a data de criação
-                .updateDate(LocalDateTime.now())  // Define a data de atualização
                 .build();
 
         customerMap.put(savedCustomer.getId(), savedCustomer);
 
         return savedCustomer;
+    }
+
+    @Override
+    public Optional<Customer> getCustomerById(UUID uuid) {
+        return Optional.of(customerMap.get(uuid));
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        return new ArrayList<>(customerMap.values());
     }
 }
