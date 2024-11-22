@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class CustomerErrorController {
 
     @ExceptionHandler
-    ResponseEntity handleJPAValidation(TransactionSystemException exception) {
+    ResponseEntity handleJPAViolations(TransactionSystemException exception){
         return ResponseEntity.badRequest().build();
     }
 
